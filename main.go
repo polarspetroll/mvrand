@@ -4,11 +4,11 @@ import (
 	"crypto/rand"
 	"encoding/hex"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
 	"strconv"
-  "io/ioutil"
 )
 
 func main() {
@@ -16,27 +16,28 @@ func main() {
 	if length == -1 {
 		length = 5
 	}
-  if filename == "." {
+	if filename == "." {
 		RenameAll(length)
-    return
+		return
 	}
 	outname := RandName(length)
-  ex := filepath.Ext(filename)
-  fmt.Println(filename+ " =>" + outname + ex)
+	ex := filepath.Ext(filename)
+	fmt.Println(filename + " =>" + outname + ex)
 	err := os.Rename(filename, outname+ex)
 	CheckErr(err)
 }
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func RenameAll(length int) {
-  files, err := ioutil.ReadDir(".")
-  CheckErr(err)
-  for _, f := range files {
-    outname := RandName(length)
-    ex := filepath.Ext(f.Name())
-    fmt.Println(f.Name() + "=> " + outname+ex)
-    err = os.Rename(f.Name(), outname+ex)
-  }
+	files, err := ioutil.ReadDir(".")
+	CheckErr(err)
+	for _, f := range files {
+		outname := RandName(length)
+		ex := filepath.Ext(f.Name())
+		fmt.Println(f.Name() + "=> " + outname + ex)
+		err = os.Rename(f.Name(), outname+ex)
+	}
 }
 
 func RandName(length int) string {
@@ -67,6 +68,7 @@ func CheckErr(err error) {
 		log.Fatal(err)
 	}
 }
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 var banner string = `
 Usage : mvrand [file name] [options]
